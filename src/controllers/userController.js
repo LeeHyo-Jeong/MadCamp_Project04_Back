@@ -14,6 +14,7 @@ exports.register = async (req, res) => {
         const accessToken = jwt.sign({ userId: user.userId }, process.env.SECRET_KEY, { expiresIn: '1h' });
         res.status(201).json({ accessToken });
     } catch(err){
+        console.log(err);
         res.status(500).send("Server error");
     }
 };
@@ -24,7 +25,7 @@ exports.login = async (req, res) => {
     try{
         const user = await User.findOne({userId: userId});
         if (user && await bcrypt.compare(password, user.password)) {
-            const accessToken = jwt.sign({userId: user.userId}, process.env.SECRET_KEY, {expiresIn: '1h'});
+            const accessToken = jwt.sign({userId: user._id}, process.env.SECRET_KEY, {expiresIn: '1h'});
             res.json({accessToken});
         } else {
             res.status(401).send("Invalid credentials");

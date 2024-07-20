@@ -5,6 +5,7 @@ const {register, login} = require('../controllers/userController');
 
 const router = express.Router();
 
+// /auth
 router.post('/register', register);
 router.post('/login', login);
 
