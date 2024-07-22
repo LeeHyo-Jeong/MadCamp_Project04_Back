@@ -2,10 +2,19 @@ const Diary = require("../models/Diary");
 const mongoose = require("mongoose");
 
 exports.addDiary = async (req, res) => {
-    const { date, title, contents } = req.body;
+    const { date, title, contents, type } = req.body;
     const userObjectId = new mongoose.Types.ObjectId(req.userObjectId); // userId를 ObjectId로 변환
+    let image, audio;
 
-    const newDiary = new Diary({date, title, contents, userObjectId});
+    if(req.file && req.file.fieldname === 'audio'){
+        audio = req.file.path;
+    }
+
+    if(req.body.image){
+        image = req.body.image;
+    }
+
+    const newDiary = new Diary({date, title, contents, image, audio, type, userObjectId});
 
     try{
         await newDiary.save();

@@ -6,13 +6,20 @@ const diarySchema = new mongoose.Schema({
         required: true
     },
     title: {
-        type: String,
-        required: true
+        type: String
     },
     contents: {
         type: String,
-
-        required: true
+    },
+    image: {
+        type: String // base64 encoded image data
+    },
+    audio: {
+        type: String // base64 encoded audio data
+    },
+    type: {
+      type: String,
+      required: true // text, image, audio
     },
     userObjectId: {
         type: mongoose.Schema.Types.ObjectId,

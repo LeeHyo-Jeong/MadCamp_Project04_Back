@@ -5,7 +5,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const authRoutes = require('./src/routes/auth');
+const authRoutes = require('./src/routes/authRoutes');
 const diaryRoutes = require('./src/routes/diaryRoutes');
 const app = express();
 
