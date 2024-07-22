@@ -1,5 +1,5 @@
 const express = require('express')
-const { addDiary, getDiaries } = require("../controllers/diaryController");
+const { addDiary, getDiaries, getDiariesByMonth} = require("../controllers/diaryController");
 const router = express.Router();
 const verifyToken = require("../middlewares/verifyTokens");
 const multer = require('multer');
@@ -33,5 +33,7 @@ router.post('/', verifyToken, (req, res, next) => {
     });
 } ,addDiary);
 router.get('/', verifyToken, getDiaries);
+router.get('/month/:year/:month', verifyToken, getDiariesByMonth);
+
 
 module.exports = router;
