@@ -31,7 +31,7 @@ router.post('/', verifyToken, (req, res, next) => {
         }
         next(); // 다음 middleware function을 실행
     });
-} ,addDiary);
+} , addDiary);
 
 router.get('/:type/:id', verifyToken, getDiaryByTypeAndId);
 router.get('/month/:year/:month', verifyToken, getDiariesByMonth);
