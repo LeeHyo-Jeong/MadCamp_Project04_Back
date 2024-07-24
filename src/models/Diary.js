@@ -24,7 +24,11 @@ const diarySchema = new mongoose.Schema({
     userObjectId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-    }
+    },
+    background: {
+        type: String,
+        required: true
+    },
 });
 
 module.exports = mongoose.model('Diary', diarySchema);

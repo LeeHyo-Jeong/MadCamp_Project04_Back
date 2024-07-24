@@ -4,11 +4,11 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 exports.register = async (req, res) => {
-    const {userId, password} = req.body;
+    const {userId, password, nickname} = req.body;
 
     try{
         const hashedPassword = await bcrypt.hash(password, 10);
-        const user = new User({userId, password: hashedPassword});
+        const user = new User({userId, password: hashedPassword, nickname});
         await user.save();
 
         const accessToken = jwt.sign({ userId: user.userId }, process.env.SECRET_KEY, { expiresIn: '1h' });
@@ -36,3 +36,15 @@ exports.login = async (req, res) => {
     }
 }
 
+exports.userInfo = async(req, res) => {
+    try{
+        const user = await User.findById(req.userObjectId);
+        if(!user){
+            return res.status(404).json({message: 'User not found'});
+        }
+        res.json({nickname: user.nickname});
+    }catch(err){
+        console.error(err);
+        res.status(500).send("Server error");
+    }
+};

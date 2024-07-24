@@ -8,6 +8,7 @@ const cors = require('cors');
 const authRoutes = require('./src/routes/authRoutes');
 const diaryRoutes = require('./src/routes/diaryRoutes');
 const app = express();
+const path = require('path');
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -19,6 +20,10 @@ mongoose.connect(process.env.MONGODB_URL, {
 
 app.use("/auth", authRoutes);
 app.use("/diary", diaryRoutes);
+
+// 정적 파일 제공 설정 (uploads 폴더 내 파일을 클라이언트에 제공)
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 
 const PORT = process.env.PORT;
 

@@ -1,5 +1,5 @@
 const express = require('express')
-const { addDiary, getDiaries, getDiariesByMonth} = require("../controllers/diaryController");
+const { deleteDiary, addDiary, getDiaries, getDiariesByMonth, getDiaryByTypeAndId} = require("../controllers/diaryController");
 const router = express.Router();
 const verifyToken = require("../middlewares/verifyTokens");
 const multer = require('multer');
@@ -22,7 +22,7 @@ const upload = multer({storage: storage});
 
 // /diary 경로에 대한 post, get 요청은 verifyToken 미들웨어를 거쳐서
 // 토큰을 검증한 후 컨트롤러 함수 실행
-// 업로드 미들웨어를 조건부로 사용하여 파일이 존재한느 경우 파일을 업로드
+// 업로드 미들웨어를 조건부로 사용하여 파일이 존재하는 경우 파일을 업로드
 router.post('/', verifyToken, (req, res, next) => {
     const uploadMiddleware = upload.single('audio');
     uploadMiddleware(req, res, (err) => {
@@ -32,8 +32,10 @@ router.post('/', verifyToken, (req, res, next) => {
         next(); // 다음 middleware function을 실행
     });
 } ,addDiary);
-router.get('/', verifyToken, getDiaries);
-router.get('/month/:year/:month', verifyToken, getDiariesByMonth);
 
+router.get('/:type/:id', verifyToken, getDiaryByTypeAndId);
+router.get('/month/:year/:month', verifyToken, getDiariesByMonth);
+router.get('/', verifyToken, getDiaries);
+router.delete('/:id', verifyToken, deleteDiary);
 
 module.exports = router;
