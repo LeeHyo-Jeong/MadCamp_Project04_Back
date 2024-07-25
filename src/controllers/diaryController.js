@@ -91,3 +91,34 @@ exports.deleteDiary = async (req, res) => {
         res.status(500).send("Server error");
     }
 };
+
+exports.editDiary = async (req, res) => {
+    const { type, id } = req.params;
+    const {date, title, background, contents } = req.body;
+
+    let updateData = { date, title, background };
+
+    if(contents) updateData.contents = contents;
+    if(req.files && req.files.audio) updateData.audio = req.files.audio[0].path;
+    if(req.body.image) {
+        // Base64 문자열이므로 직접 저장
+        updateData.image = req.body.image;
+    } else if (req.files && req.files.image) {
+        updateData.image = req.files.image[0].path;
+    }
+
+    try{
+        const diary = await Diary.findOneAndUpdate(
+            {_id: id, type},
+            updateData,
+            {new: true},
+        );
+
+        if(!diary){
+            return res.status(404).json({message: 'Diary not found'});
+        }
+        res.status(200).json(diary);
+    } catch(error){
+        res.status(500).json({message: 'Error updating diary', error});
+    }
+};
